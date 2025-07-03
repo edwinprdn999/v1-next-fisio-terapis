@@ -19,7 +19,7 @@ export default function DaftarPasienPage() {
   const [pasienEdit, setPasienEdit] = useState<Pasien | null>(null)
   const [search, setSearch] = useState('')
   const [currentPage, setCurrentPage] = useState(1)
-  const itemsPerPage = 5
+  const itemsPerPage = 10
 
   useEffect(() => {
     getPasienList().then(setPasienList)
@@ -41,7 +41,7 @@ export default function DaftarPasienPage() {
     if (pasienEdit) {
       await updatePasien(data)
       setPasienList((prev) =>
-        prev.map((p) => (p.id === data.id ? data : p))
+        prev.map((p) => (p.nik === data.nik ? data : p))
       )
       alertSuccess('Pasien berhasil diubah!')
     } else {
@@ -54,12 +54,12 @@ export default function DaftarPasienPage() {
     setPasienEdit(null)
   }
 
-  const handleDelete = async (id: string) => {
+  const handleDelete = async (nik: string) => {
     const ok = await confirmDelete()
     if (!ok) return
 
-    await deletePasien(id)
-    setPasienList((prev) => prev.filter((p) => p.id !== id))
+    await deletePasien(nik)
+    setPasienList((prev) => prev.filter((p) => p.nik !== nik))
     alertSuccess('Pasien berhasil dihapus!')
   }
 
@@ -81,7 +81,7 @@ export default function DaftarPasienPage() {
   }
 
   return (
-    <main className="flex-1 overflow-y-auto p-4 md:p-6 bg-gray-50">
+    <main className="flex-1 overflow-y-auto p-4 bg-gray-50">
       <div className="flex justify-between items-center mb-4">
         <h1 className="text-2xl font-bold text-gray-900">Daftar Pasien</h1>
       </div>
@@ -93,7 +93,7 @@ export default function DaftarPasienPage() {
             setIsModalOpen(true)
             setPasienEdit(null)
           }}
-          className="bg-yellow-400 hover:bg-yellow-500 text-white px-4 py-2 rounded-md font-semibold"
+          className="bg-yellow-400 hover:bg-yellow-500 text-white px-4 py-2 rounded-md font-semibold "
         >
           ➕ Buat Pasien Baru
         </button>

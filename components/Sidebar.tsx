@@ -2,6 +2,7 @@
 
 import { usePathname } from 'next/navigation'
 import Link from 'next/link'
+import { Menu, X } from 'lucide-react'
 import { FC } from 'react'
 
 interface SidebarProps {
@@ -11,10 +12,10 @@ interface SidebarProps {
 
 const navItems = [
   { label: '🏠 Dashboard', href: '/dashboard' },
-  { label: '📅 Jadwal', href: '/jadwal' },
   { label: '📋 Daftar Pasien', href: '/daftar-pasien' },
-  { label: '🧑‍⚕️ Terapis', href: '/terapis' },
-  { label: '🎁 Paket & TA', href: '/paket' },
+  { label: '📅 Jadwal', href: '/jadwal' },
+  { label: '🧑‍⚕️ Praktisioner', href: '/praktisioner' },
+  // { label: '🎁 Paket & TA', href: '/paket' },
 ]
 
 const Sidebar: FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
@@ -25,7 +26,7 @@ const Sidebar: FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
       {/* Overlay mobile */}
       {isOpen && (
         <div
-          className="fixed inset-0 bg-black bg-opacity-50 z-40 md:hidden"
+          className="fixed inset-0 bg-opacity-50 z-40 md:hidden"
           onClick={toggleSidebar}
         />
       )}
@@ -38,10 +39,20 @@ const Sidebar: FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
           bg-white shadow-md overflow-y-auto
           transform transition-transform duration-300 ease-in-out
           ${isOpen ? 'translate-x-0' : '-translate-x-full'}
-          md:translate-x-0 md:static md:block
+          md:translate-x-0 md:static 
+          ${!isOpen && 'md:hidden'}  // Tambahan ini agar bisa hide saat desktop
         `}
       >
-        <div className="p-4 font-bold text-xl border-b">Fisio OS Logo</div>
+        <div className="flex items-center justify-between p-4 border-b">
+          <div className="font-bold text-xl">Fisio OS Logo</div>
+          <button
+            onClick={toggleSidebar}
+            className=" text-gray-600 hover:text-black"
+          >
+            {/* <Menu size={24} /> */}
+            {isOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
+        </div>
         <nav className="p-4 space-y-2">
           {navItems.map((item) => {
             const isActive = pathname === item.href

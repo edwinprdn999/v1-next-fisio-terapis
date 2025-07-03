@@ -1,11 +1,15 @@
 export interface Pasien {
   id: string
+  nik : string
   nama: string
   namaPanggilan?: string
-  tanggalLahir: string
   gender: 'Laki Laki' | 'Perempuan'
-  alamat: string
-  agama?: string
+  tanggalLahir: string
+  nomor_wa: string
   pekerjaan?: string
+  alamat?: string
+  provinsi?: string
+  kota?: string
+  agama?: string
   status: 'Active' | 'Inactive'
 }

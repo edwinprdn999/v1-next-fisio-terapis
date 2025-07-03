@@ -1,8 +1,8 @@
 // lib/api/terapis.ts
-import { Terapis } from '@/types/terapis'
+import { Praktisioner } from '@/types/praktisioner'
 
 // Simpan sementara di memori (dummy data)
-let terapisData: Terapis[] = [
+let praktisionerData: Praktisioner[] = [
   {
     id: '1',
     nama: 'Siti Nurhaliza',
@@ -181,33 +181,33 @@ let terapisData: Terapis[] = [
 ]
 
 // Ambil seluruh daftar terapis
-export async function getTerapisList(): Promise<Terapis[]> {
+export async function getPraktisionerList(): Promise<Praktisioner[]> {
   return new Promise((resolve) => {
     setTimeout(() => {
-      resolve(terapisData)
+      resolve(praktisionerData)
     }, 300)
   })
 }
 
 // Tambah terapis baru
-export async function tambahTerapis(data: Omit<Terapis, 'id'>): Promise<Terapis> {
-  const newTerapis: Terapis = {
+export async function tambahPraktisioner(data: Omit<Praktisioner, 'id'>): Promise<Praktisioner> {
+  const newPraktisioner: Praktisioner = {
     id: Date.now().toString(),
     ...data,
   }
-//   terapisData.push(newTerapis)
-  return newTerapis
+//   praktisionerData.push(newPraktisioner)
+  return newPraktisioner
 }
 
-// Perbarui terapis
-export async function updateTerapis(updated: Terapis): Promise<Terapis> {
-  terapisData = terapisData.map((t) =>
+// Perbarui praktisioner
+export async function updatePraktisioner(updated: Praktisioner): Promise<Praktisioner> {
+  praktisionerData = praktisionerData.map((t) =>
     t.id === updated.id ? updated : t
   )
   return updated
 }
 
-// Hapus terapis
-export async function deleteTerapis(id: string): Promise<void> {
-  terapisData = terapisData.filter((t) => t.id !== id)
+// Hapus praktisioner
+export async function deletePraktisioner(id: string): Promise<void> {
+  praktisionerData = praktisionerData.filter((t) => t.id !== id)
 }

@@ -1,36 +1,36 @@
 'use client'
 
 import { useEffect, useMemo, useState } from 'react'
-import { Terapis } from '@/types/terapis'
+import { Praktisioner } from '@/types/praktisioner'
 import {
-  getTerapisList,
-  tambahTerapis,
-  updateTerapis,
-  deleteTerapis,
-} from '@/lib/api/terapis'
-import TerapisTable from '@/components/Terapis/TerapisTable'
-import TerapisForm from '@/components/Terapis/TerapisForm'
+  getPraktisionerList,
+  tambahPraktisioner,
+  updatePraktisioner,
+  deletePraktisioner,
+} from '@/lib/api/praktisioner'
+import PraktisionerTable from '@/components/Praktisioner/PraktisionerTable'
+import PraktisionerForm from '@/components/Praktisioner/PraktisionerForm'
 import { alertSuccess, confirmDelete } from '@/lib/utils/swal'
 import { Search } from 'lucide-react'
 
-export default function DaftarTerapisPage() {
-  const [terapisList, setTerapisList] = useState<Terapis[]>([])
+export default function DaftarPraktisionerPage() {
+  const [praktiosionerList, setPraktisionerList] = useState<Praktisioner[]>([])
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const [terapisEdit, setTerapisEdit] = useState<Terapis | null>(null)
+  const [praktisionerEdit, setPraktisionerEdit] = useState<Praktisioner | null>(null)
 
   const [search, setSearch] = useState('')
   const [currentPage, setCurrentPage] = useState(1)
-  const itemsPerPage = 5
+  const itemsPerPage = 10
 
   useEffect(() => {
-    getTerapisList().then(setTerapisList)
+    getPraktisionerList().then(setPraktisionerList)
   }, [])
 
   const filteredList = useMemo(() => {
-    return terapisList.filter((t) =>
+    return praktiosionerList.filter((t) =>
       t.nama.toLowerCase().includes(search.toLowerCase())
     )
-  }, [terapisList, search])
+  }, [praktiosionerList, search])
 
   const totalPages = Math.ceil(filteredList.length / itemsPerPage)
   const paginatedList = filteredList.slice(
@@ -38,34 +38,36 @@ export default function DaftarTerapisPage() {
     currentPage * itemsPerPage
   )
 
-  const handleSubmit = async (data: Terapis) => {
-    if (terapisEdit) {
-      await updateTerapis(data)
-      setTerapisList((prev) => prev.map((t) => (t.id === data.id ? data : t)))
-      alertSuccess('Terapis berhasil diubah!')
+  const handleSubmit = async (data: Praktisioner) => {
+    if (praktisionerEdit) {
+      await updatePraktisioner(data)
+      setPraktisionerList((prev) => prev.map((t) => (t.id === data.id ? data : t)))
+      alertSuccess('Praktisioner berhasil diubah!')
     } else {
-      const newTerapis = await tambahTerapis({
+      const newPraktisioner = await tambahPraktisioner({
         nama: data.nama,
         gender: data.gender,
         noHp: data.noHp,
         status: data.status,
       })
-      setTerapisList((prev) => [...prev, newTerapis])
-      alertSuccess('Terapis berhasil ditambahkan!')
+      setPraktisionerList((prev) => [...prev, newPraktisioner])
+      alertSuccess('Praktisioner berhasil ditambahkan!')
     }
 
     setIsModalOpen(false)
-    setTerapisEdit(null)
+    setPraktisionerEdit(null)
   }
 
   const handleDelete = async (id: string) => {
     const ok = await confirmDelete()
     if (!ok) return
 
-    await deleteTerapis(id)
-    setTerapisList((prev) => prev.filter((t) => t.id !== id))
-    alertSuccess('Terapis berhasil dihapus!')
+    await deletePraktisioner(id)
+    setPraktisionerList((prev) => prev.filter((t) => t.id !== id))
+    alertSuccess('Praktisioner berhasil dihapus!')
   }
+
+    const [openDropdownId, setOpenDropdownId] = useState<string | null>(null)
 
   function getVisiblePages(current: number, total: number): (number | string)[] {
     const delta = 2
@@ -89,27 +91,27 @@ export default function DaftarTerapisPage() {
   }
 
   return (
-    <main className="flex-1 overflow-y-auto p-4 md:p-6 bg-gray-50">
+    <main className="flex-1 overflow-y-auto p-4 bg-gray-50">
       <div className="flex justify-between items-center mb-4">
-        <h1 className="text-2xl font-bold text-gray-900">Daftar Terapis</h1>
+        <h1 className="text-2xl font-bold text-gray-900">Daftar Praktisioner</h1>
       </div>
 
       <div className="flex justify-between items-center mb-4">
         <button
           onClick={() => {
             setIsModalOpen(true)
-            setTerapisEdit(null)
+            setPraktisionerEdit(null)
           }}
           className="bg-yellow-400 hover:bg-yellow-500 text-white px-4 py-2 rounded-md font-semibold"
         >
-          ➕ Tambah Terapis
+          ➕ Tambah Praktisioner
         </button>
 
         <div className="relative w-64">
           <Search className="absolute left-2 top-2.5 h-4 w-4 text-black" />
           <input
             type="text"
-            placeholder="Cari nama terapis..."
+            placeholder="Cari nama praktisioner..."
             value={search}
             onChange={(e) => {
               setSearch(e.target.value)
@@ -123,22 +125,25 @@ export default function DaftarTerapisPage() {
       {}
       {filteredList.length === 0 ? (
         <div className="bg-white rounded-md shadow p-6 text-center text-gray-500">
-          Tidak ada data terapis yang ditemukan.
+          Tidak ada data praktisioner yang ditemukan.
         </div>
       ) : (
         <>
-          <TerapisTable
-            terapisList={paginatedList}
-            onEditClick={(t) => {
-              setTerapisEdit(t)
-              setIsModalOpen(true)
-            }}
-            onDeleteClick={handleDelete}
-          />
+          <PraktisionerTable
+                      praktisionerList={paginatedList}
+                      openDropdownId={openDropdownId}
+                      toggleDropdown={(id) =>
+                        setOpenDropdownId((prev) => (prev === id ? null : id))
+                      }
+                      onEditClick={(t) => {
+                        setPraktisionerEdit(t)
+                        setIsModalOpen(true)
+                      }}
+                    />
 
           <div className="flex justify-between items-center mb-2 mt-2">
             <p className="text-sm text-gray-600">
-              Menampilkan {paginatedList.length} dari {filteredList.length} terapis
+              Menampilkan {paginatedList.length} dari {filteredList.length} praktisioner
             </p>
           </div>
         </>
@@ -200,14 +205,14 @@ export default function DaftarTerapisPage() {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
           <div className="bg-white w-full max-w-md p-6 rounded-md shadow-md relative">
             <h2 className="text-2xl font-bold text-center mb-2 text-black">
-              {terapisEdit ? 'Edit Terapis' : 'Tambah Terapis'}
+              {praktisionerEdit ? 'Edit Praktisioner' : 'Tambah Praktisioner'}
             </h2>
 
-            <TerapisForm
-              initialData={terapisEdit || {}}
+            <PraktisionerForm
+              initialData={praktisionerEdit || {}}
               onCancel={() => {
                 setIsModalOpen(false)
-                setTerapisEdit(null)
+                setPraktisionerEdit(null)
               }}
               onSubmit={handleSubmit}
             />
@@ -215,7 +220,7 @@ export default function DaftarTerapisPage() {
             <button
               onClick={() => {
                 setIsModalOpen(false)
-                setTerapisEdit(null)
+                setPraktisionerEdit(null)
               }}
               className="absolute top-2 right-3 text-gray-500 hover:text-gray-800 text-xl"
             >

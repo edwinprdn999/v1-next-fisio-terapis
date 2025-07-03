@@ -1,6 +1,14 @@
 @import "tailwindcss";
 @import "tw-animate-css";
+@media print {
+  body {
+    background: white;
+  }
 
+  button, .no-print {
+    display: none !important;
+  }
+}
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {

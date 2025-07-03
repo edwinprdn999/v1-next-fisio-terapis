@@ -1,4 +1,4 @@
-export interface Terapis {
+export interface Praktisioner {
   id: string
   nama: string
   gender: 'Laki Laki' | 'Perempuan'

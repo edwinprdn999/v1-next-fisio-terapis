@@ -29,12 +29,11 @@ const Header: FC<HeaderProps> = ({ isOpen, toggleSidebar }) => {
     <header className="flex items-center justify-between bg-white shadow px-4 py-3 md:px-6 sticky top-0 z-30">
       <button
         onClick={toggleSidebar}
-        className="md:hidden p-2"
+        className="p-2 text-gray-700 hover:text-black"
         aria-label="Toggle sidebar"
       >
-        {isOpen ? <X size={24} /> : <Menu size={24} />}
+        {isOpen ? '' : <Menu size={20} />}
       </button>
-      <div className="text-lg font-semibold">Fisio OS</div>
       {/* Profile Menu */}
       <div className="relative" ref={dropdownRef}>
         <button

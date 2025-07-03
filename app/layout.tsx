@@ -9,6 +9,7 @@ import { useState } from 'react'
 import Sidebar from "@/components/Sidebar";
 import Header from "@/components/Header";
 import { usePathname } from 'next/navigation';
+import { Menu, X } from 'lucide-react'
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -30,8 +31,11 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-    const [isOpen, setIsOpen] = useState(false)
-  const toggleSidebar = () => setIsOpen(!isOpen)
+  const [isSidebarOpen, setSidebarOpen] = useState(true)
+
+  const toggleSidebar = () => {
+    setSidebarOpen((prev) => !prev)
+  }
 
   const pathname = usePathname();
   const isAuthPage = pathname === '/login' || pathname === '/home';
@@ -48,11 +52,20 @@ export default function RootLayout({
           </ClientLayout>
         ) : (
           <ClientLayout>
-            <Sidebar isOpen={isOpen} toggleSidebar={toggleSidebar} />
-            <div className="flex-1 flex flex-col">
-              <Header isOpen={isOpen} toggleSidebar={toggleSidebar} />
+            <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
+            {/* Tombol toggle di pojok kiri atas untuk mobile */}
+            {!isSidebarOpen && (
+              <button
+                className="absolute top-4 left-4 z-50 p-2  bg-yellow-400 rounded text-white shadow"
+                onClick={toggleSidebar}
+              >
+                <Menu size={20} />
+              </button>
+            )}
+            {/* <div className="flex-1 flex flex-col"> */}
+              {/* <Header isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} /> */}
               {children}
-            </div>
+            {/* </div> */}
           </ClientLayout>
         )}
       </body>

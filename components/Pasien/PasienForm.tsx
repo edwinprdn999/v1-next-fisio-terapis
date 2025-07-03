@@ -1,8 +1,9 @@
-// components/pasien/PasienForm.tsx
 'use client'
 
 import { Pasien } from '@/types/pasien'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { getReligionList } from '@/lib/api/religion'
+import { Religion } from '@/types/religion'
 
 interface Props {
   onSubmit: (data: Pasien) => void
@@ -25,10 +26,12 @@ export default function PasienForm({ onSubmit, initialData = {}, onCancel }: Pro
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     const newPasien: Pasien = {
-      id: form.id || crypto.randomUUID(),
+      id: form.nik  || crypto.randomUUID(),
+      nik: form.nik || crypto.randomUUID(),
       nama: form.nama || '',
       namaPanggilan: form.namaPanggilan || '',
       tanggalLahir: form.tanggalLahir || '',
+      nomor_wa: form.nomor_wa || '',
       gender: form.gender || 'Perempuan',
       alamat: form.alamat || '',
       agama: form.agama || '',
@@ -37,6 +40,12 @@ export default function PasienForm({ onSubmit, initialData = {}, onCancel }: Pro
     }
     onSubmit(newPasien)
   }
+
+  const [religions, setReligions] = useState<Religion[]>([])
+
+  useEffect(() => {
+    getReligionList().then(setReligions)
+  }, [])
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
@@ -69,6 +78,17 @@ export default function PasienForm({ onSubmit, initialData = {}, onCancel }: Pro
           type="date"
           name="tanggalLahir"
           value={form.tanggalLahir || ''}
+          onChange={handleChange}
+          className="w-full text-black px-4 py-2 border rounded-md bg-gray-100"
+        />
+      </div>
+
+      <div>
+        <label className="block text-black mb-1 font-medium">Nomor Whatsapp</label>
+        <input
+          type="text"
+          name="nomor_wa"
+          value={form.nomor_wa || ''}
           onChange={handleChange}
           className="w-full text-black px-4 py-2 border rounded-md bg-gray-100"
         />
@@ -122,12 +142,9 @@ export default function PasienForm({ onSubmit, initialData = {}, onCancel }: Pro
           className="w-full px-4 py-2 border rounded-md text-black bg-gray-100"
         >
           <option value="">Pilih Agama</option>
-          <option>Islam</option>
-          <option>Protestan</option>
-          <option>Katolik</option>
-          <option>Hindu</option>
-          <option>Budha</option>
-          <option>Konghucu</option>
+          {religions.map((r) => (
+            <option key={r.id} value={r.name}>{r.name}</option>
+          ))}
         </select>
       </div>
 

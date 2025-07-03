@@ -54,7 +54,7 @@ export default function LoginPage() {
   return (
     <main className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
       <div className="bg-white w-full max-w-md rounded-md shadow-md p-8">
-        <h1 className="text-2xl font-bold text-center text-gray-900">F“Welcome to Fisio OS</h1>
+        <h1 className="text-2xl font-bold text-center text-gray-900">Welcome to Health OS</h1>
         <p className="text-sm text-center text-gray-600 mb-8">Mohon Login Untuk Melanjutkan</p>
 
         <form onSubmit={handleLogin} className="space-y-6">

@@ -1,16 +1,16 @@
 'use client'
 
+import { Praktisioner } from '@/types/praktisioner'
 import { useState, useEffect } from 'react'
-import { Terapis } from '@/types/terapis'
 
 interface Props {
-  initialData: Partial<Terapis>
-  onSubmit: (data: Terapis) => void
+  initialData: Partial<Praktisioner>
+  onSubmit: (data: Praktisioner) => void
   onCancel: () => void
 }
 
-export default function TerapisForm({ initialData, onSubmit, onCancel }: Props) {
-  const [form, setForm] = useState<Terapis>({
+export default function PraktisionerForm({ initialData, onSubmit, onCancel }: Props) {
+  const [form, setForm] = useState<Praktisioner>({
     id: '',
     nama: '',
     gender: 'Laki Laki',

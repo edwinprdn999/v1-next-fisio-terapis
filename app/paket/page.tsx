@@ -80,7 +80,7 @@ export default function DaftarPaketPage() {
   }
 
   return (
-    <main className="flex-1 overflow-y-auto p-4 md:p-6 bg-gray-50">
+    <main className="flex-1 overflow-y-auto p-4 bg-gray-50">
       <div className="flex justify-between items-center mb-4">
         <h1 className="text-2xl font-bold text-gray-900">Daftar Paket</h1>
       </div>
